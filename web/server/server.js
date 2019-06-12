@@ -5,6 +5,7 @@ var useSSL = config.getBoolean('USE_SSL');
 var express = require('express');
 var app = express();
 var secure = require('express-force-https');
+var notificationBroker = require('../notification/notificationBroker');
 
 if (useSSL) {
   app.use(secure);
@@ -17,11 +18,16 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
 app.get(['/','/index.html'], function(req, res){
-    res.render("index", {});
+  res.render("index", {});
+});
+
+app.post(['/notify/deploy'], function (req, res) {
+  notificationBroker.sendDeployNotification(req.body);
+  res.json({ok:true});
 });
 
 function initWebsocketServer(server) {
-  var wsServer = require('../notification/websocket/server/websocketServer.js');
+  var wsServer = require('../notification/senders/websocketSender/server/websocketServer.js');
   return wsServer.start(server);
 }
 

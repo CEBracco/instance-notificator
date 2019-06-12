@@ -1,5 +1,5 @@
-var config = require('../../../../config/config');
-var logger = require('../../../../utils/logger/logger');
+var config = require('../../../../../config/config');
+var logger = require('../../../../../utils/logger/logger');
 var connectionPool = require('../connectionPool/connectionPool');
 
 function start(server) {
@@ -17,7 +17,7 @@ function start(server) {
             return;
         }
         var connection = request.accept(null, request.origin);
-        logger.debug((new Date()) + ' Connection accepted.');
+        // logger.debug((new Date()) + ' Connection accepted.');
         connectionPool.pushConnection(connection);
         connection.on('close', function (reasonCode, description) {
             connectionPool.removeConnection(connection);

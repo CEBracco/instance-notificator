@@ -1,42 +1,18 @@
-var logger =  require('../logger.js');
-var config = require('../config/config.js');
+var logger =  require('../../utils/logger/logger');
+var config = require('../../config/config');
 var senders = [];
 
-for (sender of config.get('ALERT_SENDERS').split(',')) {
+for (sender of config.get('NOTIFICATION_SENDERS').split(',')) {
    senders.push(require(`./senders/${sender}Sender/${sender}Sender.js`));
 }
 
-function sendDownAlert(logEntry){
-  logger.debug('Sending DOWN alerts!');
+function sendDeployNotification(data){
+  logger.debug('Sending DEPLOY notifications!');
   for (sender of senders) {
-    sender.sendDownAlert(logEntry);
-  }
-}
-
-function sendUpAlert(logEntry){
-  logger.debug('Sending UP alerts!');
-  for (sender of senders) {
-    sender.sendUpAlert(logEntry);
-  }
-}
-
-function sendSslNotValidAlert(instance){
-  logger.debug('Sending SSL Cert not valid alerts!');
-  for (sender of senders) {
-    sender.sendSslNotValidAlert(instance);
-  }
-}
-
-function sendSslGoingToExpireAlert(instance,certificate){
-  logger.debug('Sending SSL Cert expiration alerts!');
-  for (sender of senders) {
-    sender.sendSslGoingToExpireAlert(instance,certificate);
+    sender.sendDeployNotification(data);
   }
 }
 
 module.exports = {
-  sendDownAlert:sendDownAlert,
-  sendUpAlert:sendUpAlert,
-  sendSslNotValidAlert:sendSslNotValidAlert,
-  sendSslGoingToExpireAlert:sendSslGoingToExpireAlert
+  sendDeployNotification:sendDeployNotification
 }
