@@ -6,7 +6,7 @@ function pushConnection(connection) {
 }
 
 function removeConnection(connection) {
-    global.websocketConnections = _.without(global.websocketConnections, _.find(global.websocketConnections, { code: connection.code }));
+    global.websocketConnections = _.without(global.websocketConnections, _.find(global.websocketConnections, { remoteAddress: connection.remoteAddress }));
 }
 
 function getConnections(filterFunction = function(connection){ return true }) {
@@ -26,12 +26,12 @@ function getConnectionsByCodeOrAlias(names) {
 }
 
 function registerConnection(connection, code, alias) {
-    connection.code = code;
-    connection.alias = alias;
-    removeConnection(connection);
-    pushConnection(connection);
-    //if (!getConnectionsByCodeOrAlias(code) && !getConnectionsByCodeOrAlias(alias)) {
-    //}
+    if (getConnectionsByCodeOrAlias([code]).length == 0 && getConnectionsByCodeOrAlias([alias]).length == 0) {
+        removeConnection(connection)
+        connection.code = code;
+        connection.alias = alias;
+        pushConnection(connection);
+    }
 }
 
 module.exports = {
