@@ -4,7 +4,7 @@
   "description": "A intances notificator for universe instances",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node --require dotenv/config index.js",
     "test": "node --require dotenv/config index.js",
     "signal": "node signal.js signal"
   },
