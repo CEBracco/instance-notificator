@@ -22,8 +22,12 @@ app.get(['/','/index.html'], function(req, res){
 });
 
 app.post(['/notify/deploy'], function (req, res) {
-  notificationBroker.sendDeployNotification(req.body);
-  res.json({ok:true});
+  if (req.body.serviceToken == config.get('WEBSOCKET_SEND_TOKEN')){
+    notificationBroker.sendDeployNotification(req.body.instances, req.body.version, req.body.build);
+    res.json({ok:true, message:"All deploy notifications sended!"});
+  } else {
+    res.json({ok:false, message:"Unauthorized"})
+  }
 });
 
 function initWebsocketServer(server) {
