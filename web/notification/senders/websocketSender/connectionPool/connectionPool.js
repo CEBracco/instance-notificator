@@ -27,12 +27,12 @@ function getConnectionsByCodeOrAlias(names) {
 }
 
 function registerConnection(connection, code, alias) {
-    //if (getConnectionsByCodeOrAlias(code).length == 0 && getConnectionsByCodeOrAlias(alias).length == 0) {
+    if (getConnectionsByCodeOrAlias([code]).length == 0 && getConnectionsByCodeOrAlias([alias]).length == 0) {
         removeConnection(connection)
         connection.code = code;
         connection.alias = alias;
         pushConnection(connection);
-    //}
+    }
 }
 
 module.exports = {
