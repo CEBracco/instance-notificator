@@ -20,17 +20,18 @@ function getRegisteredConnections() {
 }
 
 function getConnectionsByCodeOrAlias(names) {
-    return getConnections(function(connection){
+    return getRegisteredConnections(function(connection){
         return _.includes(names, connection.code) || _.includes(names, connection.alias);
     });
 }
 
 function registerConnection(connection, code, alias) {
-    if (!(getConnectionsByCodeOrAlias(code) || getConnectionsByCodeOrAlias(alias))) {
-        connection.code = code;
-        connection.alias = alias;
-        pushConnection(connection);
-    }
+    connection.code = code;
+    connection.alias = alias;
+    removeConnection(connection);
+    pushConnection(connection);
+    //if (!getConnectionsByCodeOrAlias(code) && !getConnectionsByCodeOrAlias(alias)) {
+    //}
 }
 
 module.exports = {
