@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var logger =  require('../../utils/logger/logger.js');
 var config = require('../../config/config.js');
 var port = config.get('PORT');
@@ -26,8 +27,19 @@ app.post(['/notify/deploy'], function (req, res) {
     notificationBroker.sendDeployNotification(req.body.instances, req.body.version, req.body.build);
     res.json({ok:true, message:"All deploy notifications sended!"});
   } else {
-    res.json({ok:false, message:"Unauthorized"})
+    res.json({ok:false, message:"Unauthorized"});
   }
+});
+
+app.get(['/connections'], function (req, res) {
+  var connectionPool = require('../notification/senders/websocketSender/connectionPool/connectionPool');
+  res.json({instances: _.map(connectionPool.getRegisteredConnections(), function(connection){
+    return {
+      code: connection.code,
+      alias: connection.alias,
+      remoteAddress: connection.remoteAddress
+    }
+  })})
 });
 
 function initWebsocketServer(server) {
