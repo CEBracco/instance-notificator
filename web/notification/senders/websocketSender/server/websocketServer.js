@@ -42,12 +42,9 @@ function onMessage(connection, message) {
             var messageData = JSON.parse(message.utf8Data);
             if (messageData.type == 'REGISTRATION' && messageData.code.toLowerCase() != 'dummy' && messageData.alias.toLowerCase() != 'dummy') {
                 connectionPool.registerConnection(connection, messageData.code, messageData.alias);
-            } else {
-                logger.error("Connection is already used, closing connection...");
-                connection.drop(WebSocketConnection.CLOSE_REASON_INVALID_DATA, "Instance code/alias is already used");
             }
         } catch (error) {
-            logger.error("Can't parse received message, ignored");
+            //logger.error("Can't parse received message, ignored");
         }
     }
 }

@@ -1,5 +1,6 @@
 global.websocketConnections = [];
 let _ = require('lodash');
+var logger = require('../../../../../utils/logger/logger');
 
 function pushConnection(connection) {
     global.websocketConnections.push(connection);
@@ -31,6 +32,9 @@ function registerConnection(connection, code, alias) {
         connection.code = code;
         connection.alias = alias;
         pushConnection(connection);
+    } else {
+        logger.error("Connection is already used, closing connection...");
+        connection.drop(connection.CLOSE_REASON_INVALID_DATA, "Instance code/alias is already used");
     }
 }
 
