@@ -21,7 +21,7 @@ function getRegisteredConnections() {
 }
 
 function getConnectionsByCodeOrAlias(names) {
-    return getRegisteredConnections(function(connection){
+    return getConnections(function(connection){
         return _.includes(names, connection.code) || _.includes(names, connection.alias);
     });
 }
