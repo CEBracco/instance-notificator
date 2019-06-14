@@ -40,7 +40,7 @@ function onMessage(connection, message) {
         logger.debug('Received Message: ' + message.utf8Data);
         try {
             var messageData = JSON.parse(message.utf8Data);
-            if (messageData.type == 'REGISTRATION') {
+            if (messageData.type == 'REGISTRATION' && messageData.code.toLowerCase() != 'dummy' && messageData.alias.toLowerCase() != 'dummy') {
                 connectionPool.registerConnection(connection, messageData.code, messageData.alias);
             }
         } catch (error) {
