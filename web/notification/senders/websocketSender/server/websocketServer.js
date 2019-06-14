@@ -13,7 +13,7 @@ function start(server) {
     
     wsServer.on('connect', function(connection){
         logger.debug((new Date()) + ' Connection accepted.');
-        connectionPool.pushConnection(connection);
+        //connectionPool.pushConnection(connection);
     })
 
     wsServer.on('request', function (request) {
