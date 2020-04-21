@@ -8,7 +8,8 @@ function pushConnection(connection) {
 
 function removeConnection(connection) {
     //global.websocketConnections = _.without(global.websocketConnections, _.find(global.websocketConnections, { code: connection.code }));
-    global.websocketConnections = _.without(global.websocketConnections, _.find(global.websocketConnections, { remoteAddress: connection.remoteAddress }));
+    //global.websocketConnections = _.without(global.websocketConnections, _.find(global.websocketConnections, { remoteAddress: connection.remoteAddress }));
+    global.websocketConnections = _.without(global.websocketConnections, _.find(global.websocketConnections, { identifier: connection.identifier }));
 }
 
 function getConnections(filterFunction = function(connection){ return true }) {

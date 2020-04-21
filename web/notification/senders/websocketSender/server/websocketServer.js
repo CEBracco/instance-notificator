@@ -4,13 +4,15 @@ var connectionPool = require('../connectionPool/connectionPool');
 
 var protocol = config.get('WEBSOCKET_PROTOCOL');
 
+var nextConnectionIdentifier = 1;
+
 function start(server) {
     var WebSocketServer = require('websocket').server;
     wsServer = new WebSocketServer({
         httpServer: server,
         autoAcceptConnections: false
     });
-    
+
     wsServer.on('connect', function(connection){
         logger.debug((new Date()) + ' Connection accepted.');
         //connectionPool.pushConnection(connection);
@@ -24,6 +26,8 @@ function start(server) {
             return;
         }
         var connection = request.accept(protocol, request.origin);
+	connection.identifier = nextConnectionIdentifier;
+	nextConnectionIdentifier++;
         connection.on('message', function (message) {
             onMessage(connection, message);
         });
